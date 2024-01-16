@@ -3,26 +3,24 @@
 namespace App\Http\Controllers\Client\Feedback;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Feedback\FeedbackRequest;
 use App\Http\Resources\FeedbackResource;
 use Domain\Feedback\Contracts\FeedbackRepositoryFactoryInterface;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class StoreFeedbackController extends Controller
+class ListFeedbackController extends Controller
 {
     /**
-     * Обработка запроса на сохранение обратной связи.
-     * @param FeedbackRequest $feedbackRequest
      * @param FeedbackRepositoryFactoryInterface $feedbackRepositoryFactory
-     * @return FeedbackResource
+     * @return AnonymousResourceCollection
      */
    public function __invoke(
-       FeedbackRequest $feedbackRequest,
        FeedbackRepositoryFactoryInterface $feedbackRepositoryFactory
-   ): FeedbackResource {
+   ): AnonymousResourceCollection
+   {
        $feedbackFactory = $feedbackRepositoryFactory->make();
 
-       $feedback = $feedbackFactory->save($feedbackRequest->validated());
+       $feedbackList = $feedbackFactory->getAll();
 
-       return FeedbackResource::make($feedback);
+       return FeedbackResource::collection($feedbackList);
    }
 }

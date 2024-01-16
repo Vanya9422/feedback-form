@@ -11,4 +11,6 @@ interface FeedbackRepositoryInterface
      * @return mixed
      */
     public function save(array $data);
+
+    public function getAll();
 }
